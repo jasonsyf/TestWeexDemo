@@ -1,0 +1,165 @@
+package cn.syf.testweexdemo.weexadapter;
+
+
+import android.util.Log;
+
+import com.taobao.weex.adapter.IWXHttpAdapter;
+import com.taobao.weex.common.WXRequest;
+import com.taobao.weex.common.WXResponse;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import cn.syf.testweexdemo.MyApplication;
+import cn.syf.testweexdemo.interceptor.AddCookiesInterceptor;
+import cn.syf.testweexdemo.interceptor.CacheInterceptor;
+import cn.syf.testweexdemo.interceptor.ReceivedCookiesInterceptor;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSource;
+
+import static com.alibaba.fastjson.util.IOUtils.UTF8;
+
+/**
+ * @author : Jason_Sunyf
+ * @date : 2018年05月25日09时46分
+ * E-mail  : jason_sunyf@163.com
+ */
+public class WeexOkHttpAdapter implements IWXHttpAdapter {
+
+    private static final String METHOD_GET = "GET";
+    private static final String METHOD_POST = "POST";
+
+    public static final int REQUEST_FAILURE = -100;
+
+    @Override
+    public void sendRequest(final WXRequest request, final OnHttpListener listener) {
+        if (listener != null) {
+            listener.onHttpStart();
+        }
+        RequestListener requestListener = (consumed, total, done) -> {
+            if (checkNull(listener)) {
+                listener.onHttpUploadProgress((int) (consumed));
+            }
+        };
+
+        final ResponseListener responseListener = (consumed, total, done) -> {
+            if (checkNull(listener)) {
+                listener.onHttpResponseProgress((int) (consumed));
+            }
+        };
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Response originalResponse = chain.proceed(chain.request());
+                        return originalResponse.newBuilder()
+                                .body(new IncrementalResponseBody(originalResponse.body(), responseListener))
+                                .build();
+                    }
+                })
+                .addInterceptor(new AddCookiesInterceptor(MyApplication.getInstance(), "cookie"))
+                .addInterceptor(new ReceivedCookiesInterceptor(MyApplication.getInstance()))
+                .build();
+        StringBuilder requestStr = new StringBuilder();
+        requestStr.append("---url:").append(request.url)
+                .append("\n").append("method:").append(request.method)
+                .append("\n").append("body:").append(request.body)
+                .append("\n").append("paramMap:").append(request.paramMap);
+        Log.i("httpRequest", "sendRequest: " + requestStr);
+        if (METHOD_GET.equalsIgnoreCase(request.method)) {
+            Request okHttpRequest = new Request.Builder().url(request.url).build();
+            client.newCall(okHttpRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    if (checkNull(listener)) {
+                        WXResponse wxResponse = new WXResponse();
+                        wxResponse.errorCode = String.valueOf(REQUEST_FAILURE);
+                        wxResponse.statusCode = String.valueOf(REQUEST_FAILURE);
+                        wxResponse.errorMsg = e.getMessage();
+                    }
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (checkNull(listener)) {
+
+                        WXResponse wxResponse = new WXResponse();
+                        wxResponse.statusCode = String.valueOf(response.code());
+                        if (requestSuccess(Integer.parseInt(wxResponse.statusCode))) {
+                            wxResponse.originalData = response.body().bytes();
+                        } else {
+                            wxResponse.errorCode = String.valueOf(response.code());
+                            wxResponse.errorMsg = response.body().string();
+                        }
+
+                        listener.onHttpFinish(wxResponse);
+                    }
+                }
+            });
+        } else if (METHOD_POST.equalsIgnoreCase(request.method)) {
+            Request okHttpRequest = new Request.Builder()
+                    .header("Content-Type","application/x-www-form-urlencoded")
+                    .url(request.url)
+                    .post(new IncrementaRequestBody(RequestBody.create(MediaType.parse(request.body), request.body), requestListener))
+                    .build();
+
+            client.newCall(okHttpRequest).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    if (checkNull(listener)) {
+                        WXResponse wxResponse = new WXResponse();
+                        wxResponse.errorCode = String.valueOf(REQUEST_FAILURE);
+                        wxResponse.statusCode = String.valueOf(REQUEST_FAILURE);
+                        wxResponse.errorMsg = e.getMessage();
+                    }
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (checkNull(listener)) {
+
+                        WXResponse wxResponse = new WXResponse();
+                        wxResponse.statusCode = String.valueOf(response.code());
+                        if (requestSuccess(Integer.parseInt(wxResponse.statusCode))) {
+                            wxResponse.originalData = response.body().bytes();
+                        } else {
+                            wxResponse.errorCode = String.valueOf(response.code());
+                            wxResponse.errorMsg = response.body().string();
+                        }
+
+                        listener.onHttpFinish(wxResponse);
+                    }
+                }
+            });
+        }
+    }
+
+    private boolean requestSuccess(int statusCode) {
+        return statusCode >= 200 && statusCode <= 299;
+    }
+
+    private static boolean checkNull(Object checkable) {
+        return checkable != null;
+    }
+
+    public interface RequestListener {
+
+        void onRequest(long consumed, long total, boolean done);
+    }
+
+    public interface ResponseListener {
+
+        void onResponse(long consumed, long total, boolean done);
+    }
+}
