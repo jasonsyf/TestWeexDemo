@@ -8,7 +8,6 @@ import com.taobao.weex.adapter.IWXImgLoaderAdapter;
 import com.taobao.weex.common.IWXBridge;
 import com.taobao.weex.common.WXImageStrategy;
 import com.taobao.weex.dom.WXImageQuality;
-import com.taobao.weex.ui.IWXRenderTask;
 
 /**
  * @author : Jason_Sunyf

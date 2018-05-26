@@ -115,7 +115,39 @@ new Vue(module.exports)
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = {}
+module.exports = {
+  "input": {
+    "fontSize": "45",
+    "width": "600",
+    "marginTop": "50",
+    "marginLeft": "75",
+    "paddingTop": "25",
+    "paddingRight": "25",
+    "paddingBottom": "25",
+    "paddingLeft": "25",
+    "color": "#666666",
+    "borderWidth": "2",
+    "borderStyle": "solid",
+    "borderColor": "#41B883"
+  },
+  "wxbtn": {
+    "marginTop": "20",
+    "marginRight": "20",
+    "marginBottom": "20",
+    "marginLeft": "20",
+    "color": "#00B4FF",
+    "backgroundColor": "#00B4FF"
+  },
+  "output": {
+    "fontSize": "45",
+    "width": "600",
+    "paddingTop": "25",
+    "paddingRight": "25",
+    "paddingBottom": "25",
+    "paddingLeft": "25",
+    "color": "#666666"
+  }
+}
 
 /***/ }),
 /* 2 */
@@ -149,6 +181,30 @@ var modal = weex.requireModule('modal'); //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var stream = weex.requireModule('stream');
 var globalEvent = weex.requireModule('globalEvent');
@@ -158,7 +214,6 @@ module.exports = {
     components: { WxcButton: _WxcButton },
 
     data: function data() {
-
         return {
             getResult: {
                 code: '',
@@ -202,7 +257,8 @@ module.exports = {
                 message: me.abc + me.bcd,
                 duration: 0.3
             });
-            var POST_URL = 'http://123.52.40.57:2018/oa/login';
+            //                const POST_URL = 'http://123.52.40.57:2018/oa/login';
+            var POST_URL = 'http://192.168.1.81:8088/login';
             stream.fetch({
                 method: 'POST',
                 url: POST_URL,
@@ -216,33 +272,27 @@ module.exports = {
             }, function (ret) {
                 if (!ret.ok) {
                     modal.toast({
-                        message: "失败",
+                        message: "接口连接失败",
                         duration: 2.0
                     });
                 } else {
                     me.getResult = JSON.stringify(ret.data);
                     var msg = "";
-                    if (me.getResult.code === "200") {
+                    if (me.getResult.code == "200") {
                         msg = "请求成功";
+                        Weex2NativeNavigweeationModule.startActivity();
                     } else {
                         msg = "请求失败";
                     }
-//                    modal.toast({
-//                        message: msg + me.getResult.toString(),
-//                        duration: 2.0
-//                    });
+                    modal.toast({
+                        message: msg + me.getResult.toString(),
+                        duration: 2.0
+                    });
                 }
             }, function (response) {
-                me.getResult = JSON.stringify(response.data);
-                var msg = "";
-                if (me.getResult.code == "200") {
-
-                    Weex2NativeNavigationModule.startActivity();
-                } else {
-                    msg = "请求失败";
-                }
+                me.postResult = "bytes received:" + response.length;
                 modal.toast({
-                    message: msg + me.getResult.toString(),
+                    message: JSON.stringify('get in progress:' + response.length + me.postResult),
                     duration: 2.0
                 });
             });
@@ -525,17 +575,15 @@ module.exports.render._withStripped = true
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: ["login"],
-    attrs: {
-      "id": "login"
+    staticStyle: {
+      paddingTop: "150px"
     }
-  }, [_c('div', {
-    staticClass: ["log-email"]
   }, [_c('input', {
-    staticClass: ["'log-input'", "+", "(account==''?'", "log-input-empty':'')"],
+    staticClass: ["input"],
     attrs: {
-      "type": "text",
+      "type": "tel",
       "placeholder": "请输入帐号",
+      "autofocus": "true",
       "value": (_vm.abc)
     },
     on: {
@@ -544,7 +592,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }), _c('input', {
-    staticClass: ["'log-input'", "+", "(password==''?'", "log-input-empty':'')"],
+    staticClass: ["input"],
     attrs: {
       "type": "password",
       "placeholder": "请输入密码",
@@ -556,13 +604,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }), _c('wxc-button', {
+    staticClass: ["wxbtn"],
     attrs: {
-      "text": "确定"
+      "text": "登录"
     },
     on: {
       "wxcButtonClicked": _vm.wxcButtonClicked
     }
-  })], 1)])
+  }), _c('text', {
+    staticClass: ["output"]
+  }, [_vm._v(_vm._s(_vm.abc))]), _c('text', {
+    staticClass: ["output"]
+  }, [_vm._v(_vm._s(_vm.bcd))])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 

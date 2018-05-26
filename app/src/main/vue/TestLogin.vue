@@ -1,21 +1,45 @@
 <template>
-    <div class="login" id="login">
-        <div class="log-email">
-            <input type="text" placeholder="请输入帐号"
-                   class="'log-input' + (account==''?' log-input-empty':'')"
-                   v-model="abc">
-            <input type="password" placeholder="请输入密码" class="'log-input' + (password==''?' log-input-empty':'')"
-                   v-model="bcd"
-            >
-            <wxc-button text="确定"
-                        @wxcButtonClicked="wxcButtonClicked"></wxc-button>
-        </div>
+    <div style="padding-top: 150px">
+        <input class="input" type="tel" placeholder="请输入帐号" autofocus="true"
+               v-model="abc">
+        <input class="input" type="password" placeholder="请输入密码"
+               v-model="bcd"
+        >
+        <wxc-button class="wxbtn" text="登录"
+                    @wxcButtonClicked="wxcButtonClicked"></wxc-button>
+        <text class="output">{{abc}}</text>
+        <text class="output">{{bcd}}</text>
     </div>
 </template>
 
 <style>
     body {
         background-color: #ffffff;
+    }
+
+    .input {
+        font-size: 45px;
+        width: 600px;
+        margin-top: 50px;
+        margin-left: 75px;
+        padding: 25px;
+        color: #666666;
+        border-width: 2px;
+        border-style: solid;
+        border-color: #41B883;
+    }
+
+    .wxbtn {
+        margin: 20px;
+        color: #00B4FF;
+        background-color: #00B4FF;
+    }
+
+    .output {
+        font-size: 45px;
+        width: 600px;
+        padding: 25px;
+        color: #666666;
     }
 </style>
 
@@ -30,9 +54,8 @@
     module.exports = {
         components: {WxcButton},
 
-        data: function () {
-
-            return {
+        data:function(){
+            return{
                 getResult: {
                     code: '',
                     msg: '',
@@ -43,8 +66,7 @@
                 postResult: 'loading...',
                 abc: '',
                 bcd: '',
-            };
-
+            }
         },
 
         methods: {
@@ -78,7 +100,8 @@
                     message: me.abc + me.bcd,
                     duration: 0.3
                 });
-                const POST_URL = 'http://123.52.40.57:2018/oa/login';
+//                const POST_URL = 'http://123.52.40.57:2018/oa/login';
+                const POST_URL = 'http://192.168.1.81:8088/login';
                 stream.fetch({
                     method: 'POST',
                     url: POST_URL,
@@ -98,16 +121,16 @@
                     } else {
                         me.getResult = JSON.stringify(ret.data);
                         let msg = "";
-                        if (me.getResult.code === "200") {
-                            msg = "请求成功"
+                        if (me.getResult.code == "200") {
+                            msg = "请求成功";
+                            Weex2NativeNavigweeationModule.startActivity();
                         } else {
-                            msg = "请求失败"
+                            msg = "请求失败";
                         }
                         modal.toast({
                             message: msg + me.getResult.toString(),
                             duration: 2.0
                         });
-                        Weex2NativeNavigationModule.startActivity();
                     }
                 }, function (response) {
                     me.postResult = "bytes received:" + response.length;
