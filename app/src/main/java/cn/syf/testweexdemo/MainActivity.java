@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements IWXRenderListener {
-    WXSDKInstance mWXSDKInstance;
+    MyWXSDKInstance mWXSDKInstance;
     String TEST_URL = "http://192.168.1.14:8081/?hot-reload_controller&page=TestLogin.js";
     Intent mIntent;
     private String account, pwd;
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements IWXRenderListener
         }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        mWXSDKInstance = new WXSDKInstance(this);
+        mWXSDKInstance = new MyWXSDKInstance(this);
         mWXSDKInstance.registerRenderListener(this);
 
         Map<String, Object> options = new HashMap<>();
