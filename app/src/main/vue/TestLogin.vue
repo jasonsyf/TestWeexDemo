@@ -48,14 +48,12 @@
 
     const modal = weex.requireModule('modal');
     const stream = weex.requireModule('stream');
-    const globalEvent = weex.requireModule('globalEvent');
     const Weex2NativeNavigationModule = weex.requireModule('Weex2NativeNavigationModule');
-
     module.exports = {
         components: {WxcButton},
 
-        data:function(){
-            return{
+        data: function () {
+            return {
                 getResult: {
                     code: '',
                     msg: '',
@@ -68,23 +66,8 @@
                 bcd: '',
             }
         },
-
         methods: {
 
-            methods: {
-                // 获取 native的传参
-                getOptions: function () {
-                    this.abc = this.$getConfig().account;
-                    this.bcd = this.$getConfig().pwd;
-                }
-            },
-
-            mounted: function () {
-                const self = this;
-                globalEvent.addEventListener('params', {}, function (e) {
-
-                });
-            },
             toParams(obj) {
                 let param = "";
                 for (let name in obj) {

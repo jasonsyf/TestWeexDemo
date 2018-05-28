@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity implements IWXRenderListener
 
         Map<String, Object> options = new HashMap<>();
 //        options.put(WXSDKInstance.BUNDLE_URL, TEST_URL);
-        options.put("account", account);
-        options.put("pwd", pwd);
+        options.put("abc", account);
+        options.put("bcd", pwd);
 //        mWXSDKInstance.renderByUrl("WXSample",TEST_URL,options,null,WXRenderStrategy.APPEND_ONCE);
 //        mWXSDKInstance.render("测试啊啊啊",null,WXFileUtils.loadAsset("HelloWorld.js", this));
         mWXSDKInstance.render(MainActivity.class.getName(), WXFileUtils.loadAsset("TestLogin.weex.js",
@@ -53,11 +53,6 @@ public class MainActivity extends AppCompatActivity implements IWXRenderListener
         setContentView(view);
     }
 
-    @Override
-    public void onBackPressed(){
-        Log.e("USER ACTION", "BACK");
-//        WXSDKManager.getInstance().fireEvent(mWXSDKInstance.getInstanceId(),"_root","androidback");
-    }
 
     @Override
     public void onRenderSuccess(WXSDKInstance instance, int width, int height) {

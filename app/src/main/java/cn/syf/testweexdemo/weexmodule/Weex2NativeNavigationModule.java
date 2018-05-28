@@ -27,9 +27,22 @@ public class Weex2NativeNavigationModule extends WXNavigatorModule {
      */
     @JSMethod()
     public void startActivity() {
-        Intent intent = new Intent();
-        intent.setClass(mWXSDKInstance.getUIContext(), TestSendParamsActivity.class);
-        mWXSDKInstance.getUIContext().startActivity(intent);
+        if (mWXSDKInstance.getUIContext() instanceof Activity) {
+            Intent intent = new Intent();
+            intent.setClass(mWXSDKInstance.getUIContext(), TestSendParamsActivity.class);
+            mWXSDKInstance.getUIContext().startActivity(intent);
+        }
+    }
+
+    /**
+     * 结束当前Weex页面所在的activity
+     */
+    @JSMethod()
+    public void finishActivity() {
+        if (mWXSDKInstance.getUIContext() instanceof Activity) {
+            ((Activity) mWXSDKInstance.getUIContext()).finish();
+        }
+
     }
 
 }

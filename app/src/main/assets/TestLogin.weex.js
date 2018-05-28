@@ -207,9 +207,7 @@ var modal = weex.requireModule('modal'); //
 //
 
 var stream = weex.requireModule('stream');
-var globalEvent = weex.requireModule('globalEvent');
 var Weex2NativeNavigationModule = weex.requireModule('Weex2NativeNavigationModule');
-
 module.exports = {
     components: { WxcButton: _WxcButton },
 
@@ -227,21 +225,7 @@ module.exports = {
             bcd: ''
         };
     },
-
     methods: {
-
-        methods: {
-            // 获取 native的传参
-            getOptions: function getOptions() {
-                this.abc = this.$getConfig().account;
-                this.bcd = this.$getConfig().pwd;
-            }
-        },
-
-        mounted: function mounted() {
-            var self = this;
-            globalEvent.addEventListener('params', {}, function (e) {});
-        },
         toParams: function toParams(obj) {
             var param = "";
             for (var name in obj) {
