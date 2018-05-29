@@ -34,6 +34,11 @@ public class Weex2NativeNavigationModule extends WXNavigatorModule {
         }
     }
 
+    @JSMethod()
+    public void startActivity(String path,Object params) {
+//            ARouter.getInstance.build(path).with(params).navigate();
+    }
+
     /**
      * 结束当前Weex页面所在的activity
      */
