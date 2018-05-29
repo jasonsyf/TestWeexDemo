@@ -1,10 +1,12 @@
 <template>
     <div style="padding-top: 150px">
-        <input class="input" type="tel" placeholder="请输入帐号" autofocus="true"
-               v-model="abc">
-        <input class="input" type="password" placeholder="请输入密码"
-               v-model="bcd"
-        >
+        <div  class="container-border" style="flex-direction: row" >
+            <input class="input" type="tel" placeholder="请输入帐号" autofocus="true"
+                   v-model="abc">
+            <input class="input" type="password" placeholder="请输入密码"
+                   v-model="bcd"
+            >
+        </div>
         <wxc-button class="wxbtn" text="登录"
                     @wxcButtonClicked="wxcButtonClicked"></wxc-button>
         <text class="output">{{abc}}</text>
@@ -17,12 +19,19 @@
         background-color: #ffffff;
     }
 
+    .container-border{
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
     .input {
         font-size: 45px;
-        width: 600px;
+        width: 40%;
+        margin-left: 25px;
+        margin-right: 20px;
         margin-top: 50px;
-        margin-left: 75px;
         padding: 25px;
+        background-color: white;
         color: #666666;
         border-width: 2px;
         border-style: solid;
