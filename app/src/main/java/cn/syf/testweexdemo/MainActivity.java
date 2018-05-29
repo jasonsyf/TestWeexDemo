@@ -1,8 +1,6 @@
 package cn.syf.testweexdemo;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,15 +10,17 @@ import android.widget.Toast;
 
 import com.taobao.weex.IWXRenderListener;
 import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.WXSDKManager;
 import com.taobao.weex.common.WXRenderStrategy;
 import com.taobao.weex.utils.WXFileUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.syf.testweexdemo.wxcache.CacheWXSDKInstance;
+import cn.syf.testweexdemo.wxcache.CacheWXSDKInstance;
+
 public class MainActivity extends AppCompatActivity implements IWXRenderListener {
-    MyWXSDKInstance mWXSDKInstance;
+    CacheWXSDKInstance mWXSDKInstance;
     String TEST_URL = "http://192.168.1.14:8081/?hot-reload_controller&page=TestLogin.js";
     Intent mIntent;
     private String account, pwd;
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements IWXRenderListener
         }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        mWXSDKInstance = new MyWXSDKInstance(this);
+        mWXSDKInstance = new CacheWXSDKInstance(this);
         mWXSDKInstance.registerRenderListener(this);
 
         Map<String, Object> options = new HashMap<>();
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements IWXRenderListener
         options.put("bcd", pwd);
 //        mWXSDKInstance.renderByUrl("WXSample",TEST_URL,options,null,WXRenderStrategy.APPEND_ONCE);
 //        mWXSDKInstance.render("测试啊啊啊",null,WXFileUtils.loadAsset("HelloWorld.js", this));
-        mWXSDKInstance.render(MainActivity.class.getName(), WXFileUtils.loadAsset("TestLogin.weex.js",
+        mWXSDKInstance.render(MainActivity.class.getName(), WXFileUtils.loadAsset("AliTest.weex.js",
                 MainActivity.this), options, null, -1, -1, WXRenderStrategy.APPEND_ASYNC);
     }
 

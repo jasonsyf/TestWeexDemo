@@ -18,7 +18,7 @@ public class TestSendParamsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_send_params);
-        mButton = findViewById(R.id.btn);
+        mButton = findViewById(R.id.btn1);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
