@@ -18,9 +18,9 @@ import java.security.MessageDigest;
 
 /**
  * Description:工具类
- *
- * @author 杜乾-Dusan,Created on 2018/2/28 - 15:45.
- *         E-mail:duqian2010@gmail.com
+ * @author : Jason_Sunyf
+ * @date : 2018年05月29日10时47分
+ * E-mail  : jason_sunyf@163.com
  */
 public class CommonUtils {
 

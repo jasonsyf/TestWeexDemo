@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements IWXRenderListener
         options.put("bcd", pwd);
 //        mWXSDKInstance.renderByUrl("WXSample",TEST_URL,options,null,WXRenderStrategy.APPEND_ONCE);
 //        mWXSDKInstance.render("测试啊啊啊",null,WXFileUtils.loadAsset("HelloWorld.js", this));
-        mWXSDKInstance.render(MainActivity.class.getName(), WXFileUtils.loadAsset("TestLogin.weex.js",
+        mWXSDKInstance.render(MainActivity.class.getName(), WXFileUtils.loadAsset("OrderInput.weex.js",
                 MainActivity.this), options, null, -1, -1, WXRenderStrategy.APPEND_ASYNC);
     }
 
