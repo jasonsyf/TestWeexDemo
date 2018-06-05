@@ -25,3 +25,17 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+subprojects {
+    ext {
+        versionCode = 12
+        versionName = "1.0.12"
+
+        compileSdkVersion = 27
+        appMinSdkVersion = 16
+        targetSdkVersion = 27
+        supportLibVersion = "27.1.1"
+
+        fastjsonLibVersion = "1.2.46"
+        weex_sdkLibVersion = "0.18.0"
+    }
+}

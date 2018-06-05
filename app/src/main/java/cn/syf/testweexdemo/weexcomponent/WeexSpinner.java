@@ -41,7 +41,7 @@ public class WeexSpinner extends WXComponent<Spinner> {
     }
 
     @WXComponentProp(name = "type")
-    public <T> void initSpinner(int type){
+    public <T> void initSpinner(String json){
         //这里的type实际项目当中查询数据库时必要的参数，所以预留出来
         list = new ArrayList<>();
         for (int i=0;i<10;i++){

@@ -12,8 +12,16 @@
         </div>
         <div class="shipper_info">
             <div class="text">所在地区</div>
-            <WeexSpinner class="spinner" type="list"></WeexSpinner>
+            <WeexSpinner class="spinner"  type="util.toJSON(list)" @refresh="onrefresh"> </WeexSpinner>
             <input class="shipper_mobile_inout" type="mobile" placeholder="发货人手机号" v-model="shipper_mobile">
+        </div>
+        <div class="content">
+            <text class="address">省份：{{province}}</text>
+            <text class="address">城市：{{city}}</text>
+            <text class="address">区域：{{area}}</text>
+
+            <text class="button" @click="citypicker">选择地址</text>
+
         </div>
 
     </div>
@@ -66,18 +74,45 @@
         padding-left: 30px;
         background: none;
     }
+    .content {
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+    }
+    .address {
+        height: 56px;
+        line-height: 56px;
+        text-align: center;
+        font-size: 26px;
+    }
+    .button {
+        font-size: 24px;
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
+        color: #ffffff;
+        background-color: #00B4FF;
+    }
 
 
 </style>
 
 <script>
     const modal = weex.requireModule('modal');
+    const citypickerview = weex.requireModule('WXCitypickerModule');
     module.exports = {
         data() {
             return {
                 list: [
                    "215","asdasd","dfgas","casd","dasd","btrbhtr"
-                ]
+                ],
+                province: '浙江省',
+                city: '杭州',
+                area: '市辖区',
+
             }
         },
         methods: {
@@ -87,6 +122,18 @@
                     duration: 0.3
                 })
             },
+            citypicker() {
+                citypickerview.select({
+                    province: this.province,
+                    city: this.city,
+                    area: this.area
+                }, (result) => {
+                    this.province = result.province;
+                    this.city = result.city;
+                    this.area = result.area;
+
+                });
+            }
         }
     }
 </script>

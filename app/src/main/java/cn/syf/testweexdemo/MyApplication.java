@@ -9,6 +9,7 @@ import com.taobao.weex.common.WXException;
 import cn.syf.testweexdemo.weexadapter.ImageAdapter;
 import cn.syf.testweexdemo.weexadapter.WeexOkHttpAdapter;
 import cn.syf.testweexdemo.weexcomponent.WeexSpinner;
+import cn.syf.testweexdemo.weexmodule.WXCitypickerModule;
 import cn.syf.testweexdemo.weexmodule.Weex2NativeNavigationModule;
 
 /**
@@ -31,6 +32,7 @@ public class MyApplication extends Application {
         WXSDKEngine.initialize(this, config);
         try {
             WXSDKEngine.registerModule("Weex2NativeNavigationModule", Weex2NativeNavigationModule.class);
+            WXSDKEngine.registerModule("WXCitypickerModule", WXCitypickerModule.class);
             WXSDKEngine.registerComponent("WeexSpinner", WeexSpinner.class);
         } catch (WXException e) {
             e.printStackTrace();

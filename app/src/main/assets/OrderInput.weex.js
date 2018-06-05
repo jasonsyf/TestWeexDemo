@@ -151,6 +151,28 @@ module.exports = {
     "fontSize": "30",
     "paddingLeft": "30",
     "background": "none"
+  },
+  "content": {
+    "flex": 1,
+    "justifyContent": "center",
+    "alignItems": "center"
+  },
+  "address": {
+    "height": "56",
+    "lineHeight": "56",
+    "textAlign": "center",
+    "fontSize": "26"
+  },
+  "button": {
+    "fontSize": "24",
+    "textAlign": "center",
+    "marginTop": "20",
+    "paddingTop": "20",
+    "paddingBottom": "20",
+    "paddingLeft": "30",
+    "paddingRight": "30",
+    "color": "#ffffff",
+    "backgroundColor": "#00B4FF"
   }
 }
 
@@ -233,12 +255,46 @@ module.exports = {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var modal = weex.requireModule('modal');
+var citypickerview = weex.requireModule('WXCitypickerModule');
 module.exports = {
     data: function data() {
         return {
-            list: ["215", "asdasd", "dfgas", "casd", "dasd", "btrbhtr"]
+            list: ["215", "asdasd", "dfgas", "casd", "dasd", "btrbhtr"],
+            province: '浙江省',
+            city: '杭州',
+            area: '市辖区'
         };
     },
 
@@ -247,6 +303,19 @@ module.exports = {
             modal.toast({
                 message: '选择的魔戒是' + args.data,
                 duration: 0.3
+            });
+        },
+        citypicker: function citypicker() {
+            var _this = this;
+
+            citypickerview.select({
+                province: this.province,
+                city: this.city,
+                area: this.area
+            }, function (result) {
+                _this.province = result.province;
+                _this.city = result.city;
+                _this.area = result.area;
             });
         }
     }
@@ -325,8 +394,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: ["spinner"],
     attrs: {
       "type": "list"
+    },
+    on: {
+      "refresh": _vm.onrefresh
     }
-  }, [_vm._v("list")]), _c('input', {
+  }), _c('input', {
     staticClass: ["shipper_mobile_inout"],
     attrs: {
       "type": "mobile",
@@ -338,7 +410,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.shipper_mobile = $event.target.attr.value
       }
     }
-  })], 1)])
+  })], 1), _c('div', {
+    staticClass: ["content"]
+  }, [_c('text', {
+    staticClass: ["address"]
+  }, [_vm._v("省份：" + _vm._s(_vm.province))]), _c('text', {
+    staticClass: ["address"]
+  }, [_vm._v("城市：" + _vm._s(_vm.city))]), _c('text', {
+    staticClass: ["address"]
+  }, [_vm._v("区域：" + _vm._s(_vm.area))]), _c('text', {
+    staticClass: ["button"],
+    on: {
+      "click": _vm.citypicker
+    }
+  }, [_vm._v("选择地址")])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 
